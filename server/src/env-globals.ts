@@ -4,5 +4,6 @@ import dotEnv from 'dotenv';
 dotEnv.config();
 
 // vars
-export const port = process.env.PORT;
+export const port = process.env.PORT || 3000;
 export const clientURL = process.env.CLIENT_URL;
+export const jwtSecret = process.env.JWT_SECRET;

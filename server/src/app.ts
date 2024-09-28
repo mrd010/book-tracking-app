@@ -1,6 +1,6 @@
 import express from 'express';
 import { port } from './env-globals';
-import configuredCors from './configs/cors';
+import configuredCors from './configs/cors.config';
 import apiRouter from './routers/api-router';
 
 const app = express();
