@@ -7,3 +7,4 @@ dotEnv.config();
 export const port = process.env.PORT || 3000;
 export const clientURL = process.env.CLIENT_URL;
 export const jwtSecret = process.env.JWT_SECRET;
+export const salt = process.env.SALT || 10;

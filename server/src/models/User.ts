@@ -1,7 +1,8 @@
 import db from '../database/db';
 
 const User = {
-  async getUser({ userId, email }: { userId?: number; email?: string }) {
+  // get user info with email or id
+  async get({ userId, email }: { userId?: number; email?: string }) {
     if ((!userId && !email) || (userId && email)) {
       throw new Error('Bad method params');
     }
@@ -12,6 +13,19 @@ const User = {
       },
     });
     return user;
+  },
+  // create a new user
+  async create(email: string, password: string) {
+    const newUser = await db.user.create({
+      data: {
+        email,
+        password,
+      },
+      select: {
+        id: true,
+      },
+    });
+    return newUser;
   },
 };
 
