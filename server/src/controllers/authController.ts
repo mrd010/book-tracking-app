@@ -49,7 +49,7 @@ export const login = asyncHandler(async (req: Request, res: Response, next: Next
   sendResponse<AuthResult>(res, {
     statusCode: 201,
     status: 'success',
-    message: 'User created.',
+    message: 'Authenticated.',
     data: {
       id: user.id,
       token,
