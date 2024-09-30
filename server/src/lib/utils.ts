@@ -1,9 +1,10 @@
 import { Response } from 'express';
-import { APIResponse, FieldError, UserEssentials } from '../types';
+import { APIResponse, FieldError, SanitizedUser, UserEssentials } from '../types';
 import { Result, ValidationError } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import { jwtSecret, salt } from '../env-globals';
 import jwt from 'jsonwebtoken';
+import { User } from '@prisma/client';
 
 export const sendResponse = <T>(res: Response, data: APIResponse<T>) => {
   res.status(data.statusCode).json(data);
@@ -27,9 +28,16 @@ export const checkPassword = async (password: string, hashedPassword: string) =>
   return bcrypt.compare(password, hashedPassword);
 };
 
+// create jwt token with expiration of 10 day
 export const generateJWT = (payload: UserEssentials) => {
   if (!jwtSecret) {
     throw new Error('JWT secret not provided.');
   }
   return jwt.sign(payload, jwtSecret, { expiresIn: '10d' });
+};
+
+// purge sensitive user info from user object
+export const sanitizeUser = (user: User): SanitizedUser => {
+  const { id, email, createdAt } = user;
+  return { id, email, createdAt };
 };

@@ -12,6 +12,7 @@ export type LoginFormSchema = {
 };
 
 export type UserEssentials = Pick<User, 'id' | 'email'>;
+export type SanitizedUser = Omit<User, 'password'>;
 
 export type AuthResult = {
   id: number;
