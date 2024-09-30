@@ -32,6 +32,7 @@ model UserBook {
   userId     Int
   bookId     String
   status     BookReadStatus
+  rate       Int            @db.SmallInt
   addedAt    DateTime       @default(now())
   finishedAt DateTime
   User       User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
