@@ -4,6 +4,7 @@ import configuredCors from './configs/cors.config';
 import apiRouter from './routers/api-router';
 import { authenticate } from './middlewares/authenticate';
 import { configPassport } from './configs/passport.config';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use(authenticate);
 
 // api
 app.use('/api', apiRouter);
+
+// error handler
+app.use(errorHandler);
 
 // start server
 app.listen(port, () => {
