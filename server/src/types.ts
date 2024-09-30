@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Book, Prisma, User, UserBook } from '@prisma/client';
 
 export type SignupFormSchema = {
   email: string;
@@ -11,8 +11,25 @@ export type LoginFormSchema = {
   password: string;
 };
 
+export type BookStatus = 'stopped' | 'reading' | 'finished' | 'not-started';
+export type BookSortMethods = 'id' | 'title' | 'finished-date' | 'added-date';
+export type BooksOrderType = {
+  method: BookSortMethods;
+  order: Prisma.SortOrder;
+};
+export type BooksListFilter = {
+  status?: BookStatus;
+};
+
+export type BooksReqQueries = {
+  status?: BookStatus;
+  sort?: BookSortMethods;
+  order?: Prisma.SortOrder;
+};
+
 export type UserEssentials = Pick<User, 'id' | 'email'>;
 export type SanitizedUser = Omit<User, 'password'>;
+export type BookInfo = Omit<UserBook, 'userId'> & { book: Omit<Book, 'olid'> };
 
 export type AuthResult = {
   id: number;
