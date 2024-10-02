@@ -6,7 +6,6 @@ const bookStatusMap: Record<BookStatus, BookReadStatus> = {
   'not-started': 'NOT_STARTED',
   finished: 'FINISHED',
   reading: 'READING',
-  stopped: 'STOPPED',
 };
 
 const Book = {

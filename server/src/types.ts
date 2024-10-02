@@ -11,7 +11,7 @@ export type LoginFormSchema = {
   password: string;
 };
 
-export type BookStatus = 'stopped' | 'reading' | 'finished' | 'not-started';
+export type BookStatus = 'reading' | 'finished' | 'not-started';
 export type BookSortMethods = 'id' | 'title' | 'finished-date' | 'added-date';
 export type BooksOrderType = {
   method: BookSortMethods;

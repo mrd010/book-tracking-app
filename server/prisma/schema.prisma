@@ -31,8 +31,8 @@ model Book {
 model UserBook {
   userId     Int
   bookId     String
-  status     BookReadStatus
-  rate       Int            @db.SmallInt
+  status     BookReadStatus @default(NOT_STARTED)
+  rate       Int?           @db.SmallInt
   addedAt    DateTime       @default(now())
   finishedAt DateTime?
   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -45,5 +45,4 @@ enum BookReadStatus {
   NOT_STARTED
   READING
   FINISHED
-  STOPPED
 }

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "UserBook" ALTER COLUMN "status" SET DEFAULT 'NOT_STARTED';
