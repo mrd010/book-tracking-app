@@ -1,6 +1,6 @@
 import { body, matchedData } from 'express-validator';
-import User from '../../models/User';
-import { checkPassword } from '../../lib/utils';
+import User from '../../../models/User';
+import { checkPassword } from '../../../lib/utils';
 
 // general email validator
 const emailValidator = () =>

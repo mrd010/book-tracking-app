@@ -5,5 +5,6 @@ import { getUserBooks } from '../controllers/booksController';
 const booksRouter = Router();
 
 booksRouter.get('/', userBooksGetValidator, getUserBooks);
+booksRouter.post('/');
 
 export default booksRouter;

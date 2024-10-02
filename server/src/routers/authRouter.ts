@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import { login, signup } from '../controllers/authController';
-import { loginFormValidator, signupFormValidator } from '../middlewares/validators/authValidators';
+
 import { validationParser } from '../middlewares/validationParser';
+import {
+  loginFormValidator,
+  signupFormValidator,
+} from '../middlewares/validators/form-validators/authValidators';
 
 const authRouter = Router();
 
