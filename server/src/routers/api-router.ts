@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import authRouter from './authRouter';
 import { guestGuard, userGuard } from '../middlewares/authGuards';
-import { getUser } from '../controllers/userController';
-import { getUserBooks } from '../controllers/booksController';
-import { userBooksGetValidator } from '../middlewares/validators/query-validators/booksValidator';
+import userRouter from './userRouter';
+import booksRouter from './booksRouter';
 
 const apiRouter = Router();
 
@@ -11,9 +10,9 @@ const apiRouter = Router();
 apiRouter.use('/auth', guestGuard, authRouter);
 
 // user route
-apiRouter.use('/user', userGuard, getUser);
+apiRouter.use('/user', userGuard, userRouter);
 
 // books route
-apiRouter.use('/books', userGuard, userBooksGetValidator, getUserBooks);
+apiRouter.use('/books', userGuard, booksRouter);
 
 export default apiRouter;
