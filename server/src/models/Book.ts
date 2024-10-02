@@ -1,6 +1,12 @@
 import { Book, BookReadStatus, Prisma } from '@prisma/client';
 import db from '../database/db';
-import { BookInfo, BooksListFilter, BookSortMethods, BookStatus } from '../types';
+import {
+  BookInfo,
+  BooksListFilter,
+  BookSortMethods,
+  BookStatus,
+  NewBookFormSchema,
+} from '../types';
 
 const bookStatusMap: Record<BookStatus, BookReadStatus> = {
   'not-started': 'NOT_STARTED',
@@ -9,6 +15,41 @@ const bookStatusMap: Record<BookStatus, BookReadStatus> = {
 };
 
 const Book = {
+  // create a new book entry for user
+  async create(userId: number, values: NewBookFormSchema) {
+    const { id: bookId, title, author, isFinished, rate } = values;
+    const bookStatus: BookReadStatus = isFinished ? 'FINISHED' : 'NOT_STARTED';
+    // create book if info if not exist
+    const newBook = await db.book.upsert({
+      where: {
+        olid: bookId,
+      },
+      create: {
+        olid: bookId,
+        title: title,
+        author: author,
+      },
+      update: {},
+      select: {
+        olid: true,
+      },
+    });
+    // create user book entry
+    const newAddedBook = await db.userBook.create({
+      data: {
+        bookId: newBook.olid,
+        userId,
+        status: bookStatus,
+        finishedAt: isFinished ? new Date() : null,
+        rate: isFinished ? rate : null,
+      },
+      include: {
+        book: true,
+      },
+    });
+
+    return newAddedBook;
+  },
   // get all user added books
   async getAll(
     userId: number,

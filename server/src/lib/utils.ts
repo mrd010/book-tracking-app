@@ -41,3 +41,16 @@ export const sanitizeUser = (user: User): SanitizedUser => {
   const { id, email, createdAt } = user;
   return { id, email, createdAt };
 };
+
+// check if string is open library id
+export const isOLID = (str: string) => {
+  // check if id starts with OL (open library) and ends with M (book edition)
+  if (str.startsWith('OL') && str.endsWith('M')) {
+    // check if string contains number id
+    const id = Number(str.slice(2, -1));
+    if (!isNaN(id)) {
+      return true;
+    }
+  }
+  return false;
+};

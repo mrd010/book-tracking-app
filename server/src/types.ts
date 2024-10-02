@@ -11,6 +11,14 @@ export type LoginFormSchema = {
   password: string;
 };
 
+export type NewBookFormSchema = {
+  id: string;
+  title: string;
+  author: string;
+  isFinished: boolean;
+  rate?: number;
+};
+
 export type BookStatus = 'reading' | 'finished' | 'not-started';
 export type BookSortMethods = 'id' | 'title' | 'finished-date' | 'added-date';
 export type BooksOrderType = {
