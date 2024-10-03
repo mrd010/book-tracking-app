@@ -1,12 +1,23 @@
 import { Router } from 'express';
 import { userBooksGetValidator } from '../middlewares/validators/query-validators/booksValidator';
-import { addBookToLibrary, getUserBooks } from '../controllers/booksController';
-import { newBookFormValidator } from '../middlewares/validators/form-validators/newBookValidator';
+import {
+  addBookToLibrary,
+  deleteBook,
+  editBookStatus,
+  getUserBooks,
+} from '../controllers/booksController';
+import {
+  deleteBookValidator,
+  editBookValidator,
+  newBookFormValidator,
+} from '../middlewares/validators/form-validators/newBookValidator';
 import { validationParser } from '../middlewares/validationParser';
 
 const booksRouter = Router();
 
 booksRouter.get('/', userBooksGetValidator, getUserBooks);
 booksRouter.post('/', newBookFormValidator, validationParser, addBookToLibrary);
+booksRouter.put('/', editBookValidator, validationParser, editBookStatus);
+booksRouter.delete('/', deleteBookValidator, validationParser, deleteBook);
 
 export default booksRouter;

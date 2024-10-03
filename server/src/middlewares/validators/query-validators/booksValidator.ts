@@ -1,9 +1,5 @@
 import { query } from 'express-validator';
-import { BookSortMethods } from '../../../types';
-import { Prisma } from '@prisma/client';
-const bookReadStatuses = ['reading', 'finished', 'not-started'];
-const bookSortMethods: BookSortMethods[] = ['id', 'title', 'finished-date', 'added-date'];
-const booksSortOrders: Prisma.SortOrder[] = ['asc', 'desc'];
+import { bookReadStatuses, bookSortMethods, booksSortOrders } from '../../../data/validators-data';
 
 // ?status=reading
 const booksStatusValidator = query('status')

@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import { isOLID } from '../../../lib/utils';
+import { bookReadStatuses } from '../../../data/validators-data';
 
 const bookIdValidator = body('id')
   .notEmpty()
@@ -21,9 +22,10 @@ const bookAuthorValidator = body('author')
   .withMessage('Author must not be empty.')
   .escape();
 
-const isFinishedBook = body('isFinished').isBoolean().toBoolean();
+const bookStatusValidator = body('status').custom((value) => bookReadStatuses.includes(value));
+
 const bookRateValidator = body('rate')
-  .if(body('isFinished').equals('true')) // only validate rate if book is finished
+  .if(body('status').equals('finished')) // only validate rate if book is finished
   .optional({ values: 'falsy' })
   .isInt({ min: 1, max: 5 })
   .withMessage('Rate should be between 1 and 5.')
@@ -33,6 +35,9 @@ export const newBookFormValidator = [
   bookIdValidator,
   bookTitleValidator,
   bookAuthorValidator,
-  isFinishedBook,
+  bookStatusValidator,
   bookRateValidator,
 ];
+
+export const editBookValidator = [bookIdValidator, bookStatusValidator, bookRateValidator];
+export const deleteBookValidator = [bookIdValidator];

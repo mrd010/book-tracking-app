@@ -15,8 +15,16 @@ export type NewBookFormSchema = {
   id: string;
   title: string;
   author: string;
-  isFinished: boolean;
+  status: BookStatus;
   rate?: number;
+};
+export type EditBookFormSchema = {
+  id: string;
+  status: BookStatus;
+  rate?: number;
+};
+export type DeleteBookFormSchema = {
+  id: string;
 };
 
 export type BookStatus = 'reading' | 'finished' | 'not-started';
@@ -38,6 +46,7 @@ export type BooksReqQueries = {
 export type UserEssentials = Pick<User, 'id' | 'email'>;
 export type SanitizedUser = Omit<User, 'password'>;
 export type BookInfo = Omit<UserBook, 'userId'> & { book: Omit<Book, 'olid'> };
+export type EditedBookInfo = Omit<UserBook, 'userId' | 'addedAt'>;
 
 export type AuthResult = {
   id: number;

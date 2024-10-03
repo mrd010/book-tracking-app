@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import { BookInfo, BooksReqQueries, NewBookFormSchema, UserEssentials } from '../types';
+import {
+  BookInfo,
+  BooksReqQueries,
+  DeleteBookFormSchema,
+  EditBookFormSchema,
+  EditedBookInfo,
+  NewBookFormSchema,
+  UserEssentials,
+} from '../types';
 import Book from '../models/Book';
 import { sendResponse } from '../lib/utils';
 import { matchedData } from 'express-validator';
@@ -30,7 +38,6 @@ export const addBookToLibrary = asyncHandler(
     const { id: userId } = req.user as UserEssentials; // get current user id
 
     const newBookFormValues = matchedData<NewBookFormSchema>(req);
-    console.log(newBookFormValues);
 
     // add book to user library with provided infos
     const newBookAdded = await Book.create(userId, newBookFormValues);
@@ -50,3 +57,40 @@ export const addBookToLibrary = asyncHandler(
     });
   }
 );
+
+// edit book status
+export const editBookStatus = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id: userId } = req.user as UserEssentials; // get current user id
+    const editValues = matchedData<EditBookFormSchema>(req);
+
+    const editedBook = await Book.update(userId, editValues);
+
+    sendResponse<EditedBookInfo>(res, {
+      statusCode: 200,
+      status: 'success',
+      message: 'Book Edited.',
+      data: {
+        bookId: editedBook.bookId,
+        status: editedBook.status,
+        finishedAt: editedBook.finishedAt,
+        rate: editedBook.rate,
+      },
+    });
+  }
+);
+
+// delete a book from library
+export const deleteBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const { id: userId } = req.user as UserEssentials; // get current user id
+  const { id: bookId } = matchedData<DeleteBookFormSchema>(req);
+
+  await Book.delete(userId, bookId);
+
+  sendResponse<DeleteBookFormSchema>(res, {
+    statusCode: 200,
+    status: 'success',
+    message: 'Book Deleted.',
+    data: { id: bookId },
+  });
+});

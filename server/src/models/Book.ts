@@ -5,6 +5,7 @@ import {
   BooksListFilter,
   BookSortMethods,
   BookStatus,
+  EditBookFormSchema,
   NewBookFormSchema,
 } from '../types';
 
@@ -17,8 +18,8 @@ const bookStatusMap: Record<BookStatus, BookReadStatus> = {
 const Book = {
   // create a new book entry for user
   async create(userId: number, values: NewBookFormSchema) {
-    const { id: bookId, title, author, isFinished, rate } = values;
-    const bookStatus: BookReadStatus = isFinished ? 'FINISHED' : 'NOT_STARTED';
+    const { id: bookId, title, author, status, rate } = values;
+    const bookStatus: BookReadStatus = bookStatusMap[status];
     // create book if info if not exist
     const newBook = await db.book.upsert({
       where: {
@@ -40,8 +41,8 @@ const Book = {
         bookId: newBook.olid,
         userId,
         status: bookStatus,
-        finishedAt: isFinished ? new Date() : null,
-        rate: isFinished ? rate : null,
+        finishedAt: bookStatus === 'FINISHED' ? new Date() : null, // add finish date if status is finished
+        rate: bookStatus === 'FINISHED' ? rate : null, // only add rate if book is finished
       },
       include: {
         book: true,
@@ -49,6 +50,36 @@ const Book = {
     });
 
     return newAddedBook;
+  },
+
+  // update book status
+  async update(userId: number, newValues: EditBookFormSchema) {
+    const { id: bookId, status, rate } = newValues;
+    const newStatus = bookStatusMap[status];
+
+    const editedBook = await db.userBook.update({
+      where: {
+        userId_bookId: { bookId, userId },
+      },
+      data: {
+        status: newStatus,
+        rate: status === 'finished' ? rate : null,
+        finishedAt: status === 'finished' ? new Date() : null,
+      },
+      select: {
+        bookId: true,
+        status: true,
+        finishedAt: status === 'finished',
+        rate: status === 'finished',
+      },
+    });
+
+    return editedBook;
+  },
+  async delete(userId: number, bookId: string) {
+    await db.userBook.delete({
+      where: { userId_bookId: { bookId, userId } },
+    });
   },
   // get all user added books
   async getAll(
