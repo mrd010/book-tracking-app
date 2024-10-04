@@ -15,23 +15,27 @@ const bookStatusMap: Record<BookStatus, BookReadStatus> = {
   reading: 'READING',
 };
 
-const Book = {
-  // check if user have a book
-  async exists(userId: number, bookId: string) {
-    const book = await db.userBook.findUnique({
-      where: {
-        userId_bookId: {
-          bookId,
-          userId,
-        },
+const bookExists = async (userId: number, bookId: string) => {
+  const book = await db.userBook.findUnique({
+    where: {
+      userId_bookId: {
+        bookId,
+        userId,
       },
-    });
-    return !!book;
-  },
+    },
+  });
+  return !!book;
+};
+
+const Book = {
   // create a new book entry for user
   async create(userId: number, values: NewBookFormSchema) {
     const { id: bookId, title, author, status, rate } = values;
     const bookStatus: BookReadStatus = bookStatusMap[status];
+
+    if (await bookExists(userId, bookId)) {
+      throw new Error('Book already added.');
+    }
     // create book if info if not exist
     const newBook = await db.book.upsert({
       where: {
@@ -67,8 +71,12 @@ const Book = {
   // update book status
   async update(userId: number, newValues: EditBookFormSchema) {
     const { id: bookId, status, rate } = newValues;
-    const newStatus = bookStatusMap[status];
 
+    if (!(await bookExists(userId, bookId))) {
+      throw new Error('Book does not added yet.');
+    }
+
+    const newStatus = bookStatusMap[status];
     const editedBook = await db.userBook.update({
       where: {
         userId_bookId: { bookId, userId },
@@ -89,6 +97,9 @@ const Book = {
     return editedBook;
   },
   async delete(userId: number, bookId: string) {
+    if (!(await bookExists(userId, bookId))) {
+      throw new Error('Book does not added yet.');
+    }
     await db.userBook.delete({
       where: { userId_bookId: { bookId, userId } },
     });
