@@ -22,10 +22,18 @@ const bookAuthorValidator = body('author')
   .withMessage('Author must not be empty.')
   .escape();
 
-const bookStatusValidator = body('status').custom((value) => bookReadStatuses.includes(value));
+const bookStatusValidator = body('status')
+  .notEmpty()
+  .withMessage('Status is empty.')
+  .bail()
+  .customSanitizer((value: string) => value.toUpperCase())
+  .custom((value) => {
+    if (bookReadStatuses.includes(value)) return true;
+    throw new Error('Status value is not correct.');
+  });
 
 const bookRateValidator = body('rate')
-  .if(body('status').equals('finished')) // only validate rate if book is finished
+  .if(body('status').equals('FINISHED')) // only validate rate if book is finished
   .optional({ values: 'falsy' })
   .isInt({ min: 1, max: 5 })
   .withMessage('Rate should be between 1 and 5.')

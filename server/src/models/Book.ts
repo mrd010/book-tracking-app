@@ -1,19 +1,12 @@
-import { Book, BookReadStatus, Prisma } from '@prisma/client';
+import { Book, Prisma } from '@prisma/client';
 import db from '../database/db';
 import {
   BookInfo,
   BooksListFilter,
   BookSortMethods,
-  BookStatus,
   EditBookFormSchema,
   NewBookFormSchema,
 } from '../types';
-
-const bookStatusMap: Record<BookStatus, BookReadStatus> = {
-  'not-started': 'NOT_STARTED',
-  finished: 'FINISHED',
-  reading: 'READING',
-};
 
 const bookExists = async (userId: number, bookId: string) => {
   const book = await db.userBook.findUnique({
@@ -31,7 +24,6 @@ const Book = {
   // create a new book entry for user
   async create(userId: number, values: NewBookFormSchema) {
     const { id: bookId, title, author, status, rate } = values;
-    const bookStatus: BookReadStatus = bookStatusMap[status];
 
     if (await bookExists(userId, bookId)) {
       throw new Error('Book already added.');
@@ -56,9 +48,9 @@ const Book = {
       data: {
         bookId: newBook.olid,
         userId,
-        status: bookStatus,
-        finishedAt: bookStatus === 'FINISHED' ? new Date() : null, // add finish date if status is finished
-        rate: bookStatus === 'FINISHED' ? rate : null, // only add rate if book is finished
+        status,
+        finishedAt: status === 'FINISHED' ? new Date() : null, // add finish date if status is finished
+        rate: status === 'FINISHED' ? rate : null, // only add rate if book is finished
       },
       include: {
         book: true,
@@ -76,21 +68,20 @@ const Book = {
       throw new Error('Book does not added yet.');
     }
 
-    const newStatus = bookStatusMap[status];
     const editedBook = await db.userBook.update({
       where: {
         userId_bookId: { bookId, userId },
       },
       data: {
-        status: newStatus,
-        rate: status === 'finished' ? rate : null,
-        finishedAt: status === 'finished' ? new Date() : null,
+        status,
+        rate: status === 'FINISHED' ? rate : null,
+        finishedAt: status === 'FINISHED' ? new Date() : null,
       },
       select: {
         bookId: true,
         status: true,
-        finishedAt: status === 'finished',
-        rate: status === 'finished',
+        finishedAt: status === 'FINISHED',
+        rate: status === 'FINISHED',
       },
     });
 
@@ -145,7 +136,7 @@ const Book = {
     const userBooks = await db.userBook.findMany({
       where: {
         userId,
-        status: filters.status ? bookStatusMap[filters.status] : undefined, // use status in filters obj
+        status: filters.status, // use status in filters obj
       },
       select: {
         bookId: true,

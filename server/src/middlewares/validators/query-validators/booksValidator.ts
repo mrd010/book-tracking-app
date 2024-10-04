@@ -4,6 +4,7 @@ import { bookReadStatuses, bookSortMethods, booksSortOrders } from '../../../dat
 // ?status=reading
 const booksStatusValidator = query('status')
   .optional()
+  .customSanitizer((value: string) => value.toUpperCase())
   .custom((value) => bookReadStatuses.includes(value));
 
 // ?sort=id

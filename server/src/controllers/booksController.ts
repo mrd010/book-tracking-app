@@ -23,11 +23,11 @@ export const getUserBooks = asyncHandler(
     // get user added books
     const userBooks = await Book.getAll(id, { status }, sort, order);
 
-    sendResponse<{ userId: number; books: BookInfo[] }>(res, {
+    sendResponse<{ userId: number; count: number; books: BookInfo[] }>(res, {
       statusCode: 200,
       status: 'success',
       message: `Found ${userBooks.length} books.`,
-      data: { userId: id, books: userBooks },
+      data: { userId: id, count: userBooks.length, books: userBooks },
     });
   }
 );
@@ -38,6 +38,7 @@ export const addBookToLibrary = asyncHandler(
     const { id: userId } = req.user as UserEssentials; // get current user id
 
     const newBookFormValues = matchedData<NewBookFormSchema>(req);
+    console.log(newBookFormValues);
 
     // add book to user library with provided infos
     const newBookAdded = await Book.create(userId, newBookFormValues);

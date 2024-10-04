@@ -1,4 +1,4 @@
-import { Book, Prisma, User, UserBook } from '@prisma/client';
+import { Book, BookReadStatus, Prisma, User, UserBook } from '@prisma/client';
 
 export type SignupFormSchema = {
   email: string;
@@ -15,30 +15,29 @@ export type NewBookFormSchema = {
   id: string;
   title: string;
   author: string;
-  status: BookStatus;
+  status: BookReadStatus;
   rate?: number;
 };
 export type EditBookFormSchema = {
   id: string;
-  status: BookStatus;
+  status: BookReadStatus;
   rate?: number;
 };
 export type DeleteBookFormSchema = {
   id: string;
 };
 
-export type BookStatus = 'reading' | 'finished' | 'not-started';
 export type BookSortMethods = 'id' | 'title' | 'finished-date' | 'added-date';
 export type BooksOrderType = {
   method: BookSortMethods;
   order: Prisma.SortOrder;
 };
 export type BooksListFilter = {
-  status?: BookStatus;
+  status?: BookReadStatus;
 };
 
 export type BooksReqQueries = {
-  status?: BookStatus;
+  status?: BookReadStatus;
   sort?: BookSortMethods;
   order?: Prisma.SortOrder;
 };
