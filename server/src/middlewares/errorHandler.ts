@@ -9,6 +9,7 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (err) {
+    console.error(err);
     return sendResponse(res, {
       statusCode: err instanceof HttpError ? err.statusCode : 500,
       status: 'error',
