@@ -16,6 +16,18 @@ const bookStatusMap: Record<BookStatus, BookReadStatus> = {
 };
 
 const Book = {
+  // check if user have a book
+  async exists(userId: number, bookId: string) {
+    const book = await db.userBook.findUnique({
+      where: {
+        userId_bookId: {
+          bookId,
+          userId,
+        },
+      },
+    });
+    return !!book;
+  },
   // create a new book entry for user
   async create(userId: number, values: NewBookFormSchema) {
     const { id: bookId, title, author, status, rate } = values;
