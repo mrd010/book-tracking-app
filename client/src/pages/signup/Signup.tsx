@@ -1,4 +1,6 @@
+import { AuthFormContainer } from '@/components/auth-form-container';
+
 const Signup = () => {
-  return <div>Signup</div>;
+  return <AuthFormContainer title="Signup"></AuthFormContainer>;
 };
 export default Signup;
