@@ -13,9 +13,5 @@ export const useSignupForm = () => {
     },
   });
 
-  function submit(values: SignupFormSchemaType) {
-    console.log(values);
-  }
-
-  return { signupForm, submit };
+  return { signupForm };
 };

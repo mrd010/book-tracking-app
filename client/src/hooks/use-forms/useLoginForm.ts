@@ -12,9 +12,5 @@ export const useLoginForm = () => {
     },
   });
 
-  function submit(values: LoginFormSchemaType) {
-    console.log(values);
-  }
-
-  return { loginForm, submit };
+  return { loginForm };
 };

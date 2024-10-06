@@ -56,3 +56,5 @@ export type APIResponse<T> = {
   data?: T;
   errors?: FieldError[];
 };
+
+export type APIRoute = '/api/auth/login' | '/api/auth/signup' | '/api/user' | '/api/books';

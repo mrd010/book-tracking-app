@@ -25,8 +25,9 @@ const Password = React.forwardRef<HTMLInputElement, InputProps>(({ className, ..
         type="button"
         variant="static"
         size="icon"
-        className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full"
+        className="absolute right-0 top-1/2 -translate-y-1/2 rounded-full opacity-75 hover:opacity-100"
         onClick={toggle}
+        tabIndex={-1}
       >
         {show ? <EyeOffIcon /> : <EyeIcon />}
       </Button>
