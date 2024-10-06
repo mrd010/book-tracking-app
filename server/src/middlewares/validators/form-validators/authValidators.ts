@@ -32,7 +32,7 @@ const loginEmailValidator = emailValidator()
   .custom(async (value: string) => {
     const user = await User.get({ email: value });
     if (!user) {
-      throw new Error('Username does not exists.');
+      throw new Error('User does not exist.');
     }
     return true;
   });
