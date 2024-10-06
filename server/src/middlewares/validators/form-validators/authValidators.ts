@@ -40,19 +40,19 @@ const loginEmailValidator = emailValidator()
 const passwordValidator = () =>
   body('password')
     .isLength({ min: 8, max: 32 })
-    .withMessage('Password must be between 8 and 32 characters long.')
-    .bail()
-    .isStrongPassword({
-      minNumbers: 1,
-      minLowercase: 1,
-      minUppercase: 1,
-      minSymbols: 0,
-      minLength: 8,
-    })
-    .withMessage('Password must be made from numbers, lowercase and UPPERCASE characters.')
-    .escape();
+    .withMessage('Password must be between 8 and 32 characters long.');
 
-const signupPasswordValidator = passwordValidator();
+const signupPasswordValidator = passwordValidator()
+  .bail()
+  .isStrongPassword({
+    minNumbers: 1,
+    minLowercase: 1,
+    minUppercase: 1,
+    minSymbols: 0,
+    minLength: 8,
+  })
+  .withMessage('Password must be made from numbers, lowercase and UPPERCASE characters.');
+
 const loginPasswordValidator = passwordValidator()
   .bail()
   .custom(async (value, { req }) => {
