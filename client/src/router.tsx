@@ -1,15 +1,16 @@
 import { createRoutesFromElements, RouterProvider } from 'react-router';
 import { createBrowserRouter, Route } from 'react-router-dom';
 import Login from './pages/login/Login';
-import AppLayout from './layouts/app-layout';
 import Signup from './pages/signup/Signup';
-import Library from './pages/library/Library';
+import Layout from './layouts/layout';
+import MainLayout from './pages/main/MainLayout';
+import ErrorBoundary from './pages/error-boundary/Error';
 
 const ReactRouter = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<Library />} />
+      <Route path="/" element={<Layout />} errorElement={<ErrorBoundary />}>
+        <Route index element={<MainLayout />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
       </Route>,

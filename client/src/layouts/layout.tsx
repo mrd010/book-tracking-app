@@ -1,7 +1,7 @@
 import { Toaster } from 'react-hot-toast';
 import { Outlet } from 'react-router-dom';
 
-const AppLayout = () => {
+const Layout = () => {
   return (
     <div className="px-2">
       <Outlet />
@@ -9,4 +9,4 @@ const AppLayout = () => {
     </div>
   );
 };
-export default AppLayout;
+export default Layout;
