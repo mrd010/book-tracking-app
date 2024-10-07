@@ -2,6 +2,7 @@ import { useLogin } from '@/hooks/query-hooks/useLogin';
 import { useSignup } from '@/hooks/query-hooks/useSignup';
 import { useUser } from '@/hooks/query-hooks/useUser';
 import APIError from '@/lib/classes/APIError';
+import { toastError, toastSuccess } from '@/lib/helpers/renderers';
 import {
   APIResponse,
   AuthResult,
@@ -38,14 +39,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
 
   // get user info on token set
-  const { data: user, error: userError, status: userStatus } = useUser(authToken);
+  const { data: user, error: userError, status: userStatus, isError } = useUser(authToken);
 
   // on fetch user error set auth error
   useEffect(() => {
     if (userStatus === 'error') {
       setError(new APIError(userError.message));
     }
-  }, [userStatus, userError]);
+  }, [userStatus, userError, isError]);
 
   // auth result parser
   const parseAuthResult = (authResult: APIResponse<AuthResult>) => {
@@ -53,6 +54,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       // on successful authentication set token
       if (authResult.data) {
         setAuthToken(authResult.data.token);
+        toastSuccess('Logged in.');
       } else throw Error('No auth data received'); // never
     } else {
       if (authResult.statusCode > 400) {
@@ -60,6 +62,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Response(authResult.message, { status: authResult.statusCode });
       }
       // on failed authentication set error message and field errors
+      toastError(authResult.message);
       setError(new APIError(authResult.message, authResult.errors));
     }
   };

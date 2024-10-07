@@ -1,4 +1,5 @@
 import { httpGet } from '@/lib/helpers/data';
+import { toastError } from '@/lib/helpers/renderers';
 import { UserEssentials } from '@/lib/types/general-types';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +13,11 @@ export const useUser = (authToken: string | undefined) => {
       throw new Error(response.message);
     },
     enabled: !!authToken,
-    retry: true,
+    retry(failureCount, error) {
+      // toastError({ title: 'Error', message: error.message || 'Something went wrong.' });
+      toastError(error.message || 'Something went wrong.');
+      return true;
+    },
   });
 
   return userQuery;
