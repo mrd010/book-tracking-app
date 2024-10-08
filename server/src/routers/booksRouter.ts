@@ -15,6 +15,7 @@ import { validationParser } from '../middlewares/validationParser';
 
 const booksRouter = Router();
 
+// books?status=reading&sort=id&order=asc
 booksRouter.get('/', userBooksGetValidator, getUserBooks);
 booksRouter.post('/', newBookFormValidator, validationParser, addBookToLibrary);
 booksRouter.put('/', editBookValidator, validationParser, editBookStatus);
