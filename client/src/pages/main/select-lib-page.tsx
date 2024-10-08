@@ -22,7 +22,7 @@ export const SelectLibPage = () => {
         value={selectedPage}
         onValueChange={(value: BookReadStatus) => setSelectedPage(value)}
       >
-        <SelectTrigger className="bg-primary font-semibold text-primary-foreground">
+        <SelectTrigger className="bg-primary text-lg font-semibold text-primary-foreground">
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
         <SelectContent>
