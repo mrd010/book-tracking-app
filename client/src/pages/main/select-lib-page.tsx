@@ -8,20 +8,19 @@ import {
 import { bookReadStatuses, libPages } from '@/data/library';
 import { BookReadStatus } from '@/lib/types/general-types';
 import { BookCheckIcon, BookIcon, BookOpenIcon } from 'lucide-react';
-import { useState } from 'react';
 
-export const SelectLibPage = () => {
-  const [selectedPage, setSelectedPage] = useState<BookReadStatus>('READING');
+type SelectLibPageProps = {
+  selectedPage: BookReadStatus;
+  onSelect: (value: BookReadStatus) => void;
+};
 
+export const SelectLibPage = ({ selectedPage, onSelect }: SelectLibPageProps) => {
   return (
     <div className="grid grid-cols-[auto,1fr] items-center gap-3">
       {/* selected page icon */}
       <PageIcon page={selectedPage} />
       {/* select page */}
-      <Select
-        value={selectedPage}
-        onValueChange={(value: BookReadStatus) => setSelectedPage(value)}
-      >
+      <Select value={selectedPage} onValueChange={(value: BookReadStatus) => onSelect(value)}>
         <SelectTrigger className="bg-primary text-lg font-semibold text-primary-foreground">
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
