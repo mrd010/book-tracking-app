@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const createHttpHeaders = (authToken: string | undefined) => {
+export const createHttpHeaders = (authToken?: string | undefined) => {
   // init headers with json
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
