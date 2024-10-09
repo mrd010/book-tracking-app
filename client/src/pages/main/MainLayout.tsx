@@ -24,8 +24,7 @@ const MainLayout = () => {
   return (
     <>
       <Tabs defaultValue="library">
-        <TabsList className="fixed bottom-0 left-0 w-full rounded-none border-t border-primary">
-          {/*  */}
+        <TabsList className="fixed bottom-0 left-0 z-10 w-full rounded-none border-t border-primary">
           <TabsTrigger value="library">
             <LibraryBigIcon className="size-5" />
             Library
@@ -35,9 +34,11 @@ const MainLayout = () => {
             Profile
           </TabsTrigger>
         </TabsList>
+        {/* library page */}
         <TabsContent value="library">
           <Library />
         </TabsContent>
+        {/* profile page */}
         <TabsContent value="profile">
           <Profile />
         </TabsContent>

@@ -60,16 +60,15 @@ export const serverApiPost = async <Datatype>(
 };
 
 // getter for openlibrary api
-const oplBaseURL = 'https://openlibrary.org/';
 export const oplApiGet = async <Datatype>(
   route: string,
   queries: Record<string, string>,
 ): Promise<Datatype> => {
-  const url = createURL(route, queries, oplBaseURL); // generate url
+  const url = createURL(`/ol${route}`, queries); // generate url
   const headers = createHttpHeaders(); // create http headers object
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`${url.pathname}${url.search}`, {
       method: 'GET',
       headers,
       mode: 'cors',

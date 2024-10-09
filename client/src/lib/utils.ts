@@ -16,3 +16,12 @@ export const createHttpHeaders = (authToken?: string | undefined) => {
 
   return headers;
 };
+
+export const bookCoverURL = (bookOLID: string, size: 'S' | 'M' | 'L') => {
+  return `https://covers.openlibrary.org/b/olid/${bookOLID}-${size}.jpg`;
+};
+
+export const getIdFromBookKey = (key: string) => {
+  const splitted = key.split('/');
+  return splitted[splitted.length - 1];
+};

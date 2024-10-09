@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { BookReadStatus } from '@/lib/types/general-types';
 import { LibBooks } from './LibBooks';
 import { useSearch } from '@/hooks/useSearch';
+import { SearchPage } from './SearchPage';
 
 const Library = () => {
   // search books query state with debouncing
@@ -28,7 +29,7 @@ const Library = () => {
       <div>
         {isSearchOpen ? (
           // show search page
-          <div></div>
+          <SearchPage query={debouncedQuery} />
         ) : (
           // show books
           <>

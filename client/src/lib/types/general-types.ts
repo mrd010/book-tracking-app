@@ -55,7 +55,7 @@ export type SanitizedUser = Omit<User, 'password'>;
 export type BookInfo = Omit<UserBook, 'userId'> & { book: Omit<Book, 'olid'> };
 export type EditedBookInfo = Omit<UserBook, 'userId' | 'addedAt'>;
 
-// helper types
+// api types
 export type AuthResult = {
   id: number;
   token: string;
@@ -77,6 +77,7 @@ export type APIResponse<T> = {
 export type APIRoute = '/api/auth/login' | '/api/auth/signup' | '/api/user' | '/api/books';
 
 // open library types
+
 export type OPLBookSearchEdition = {
   key: string;
   title: string;
@@ -87,16 +88,13 @@ export type OPLBookSearchWork = {
   title: string;
   author_key: string[];
   author_name: string[];
-  first_publish_year: number;
-  number_of_pages_median: number;
   editions: OPLBookSearchBase<OPLBookSearchEdition>;
 };
 
-export type OPLBookSearchBase<DocType> = {
+type OPLBookSearchBase<DocType> = {
   numFound: number;
   start: number;
   numFoundExact: boolean;
   docs: DocType[];
 };
-
 export type OPLBookSearchResult = OPLBookSearchBase<OPLBookSearchWork>;
