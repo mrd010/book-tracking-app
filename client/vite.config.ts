@@ -10,4 +10,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/ol': {
+        target: 'https://openlibrary.org',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/ol/, ''),
+      },
+    },
+  },
 });
